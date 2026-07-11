@@ -1,5 +1,7 @@
 # Local Git Heatmap
 
+![Header Image](./assets/image.png)
+
 ## Based on [this article](https://flaviocopes.com/go-git-contributions/)
 
 Local Git Heatmap is a [Github](https://github.com) inspired heatmap for a

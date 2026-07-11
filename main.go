@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 )
 
 func main() {
@@ -15,6 +14,5 @@ func main() {
 	if folder != "" {
 		Scan(folder)
 	}
-	fmt.Println(folder)
 	stats(email)
 }

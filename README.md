@@ -50,3 +50,13 @@ local-git-heatmap -h
 ```bash
 local-git-heatmap --add-dir=<dir-name> -email=<email@example.com>
 ```
+
+### Working
+
+#### Overview of CLI
+
+![Overview](./assets/cli-overview.png)
+
+#### Scan directory process
+
+![Scan Dir](./assets/scan-dir-process.png)

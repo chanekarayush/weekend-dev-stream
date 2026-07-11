@@ -12,12 +12,6 @@ import (
 	"github.com/go-git/go-git/v6/plumbing/object"
 )
 
-const (
-	daysInLastSixMonths  = 183
-	weeksInLastSixMonths = 26
-	outOfRange           = 99999
-)
-
 type columns []int
 
 func stats(email string) {
@@ -38,7 +32,7 @@ func processRepos(email string) map[int]int {
 	}
 	daysInMap := daysInLastSixMonths
 	commits := make(map[int]int)
-	for i := 0; i <= daysInMap; i++ {
+	for i := 1; i <= daysInMap; i++ {
 		commits[i] = 0
 	}
 
@@ -161,20 +155,15 @@ func sortMapIntoSlice(commits map[int]int) []int {
 
 func generateColumns(keys []int, commits map[int]int) map[int]columns {
 	cols := make(map[int]columns)
-	col := columns{}
 	for _, k := range keys {
-		week := int(k / 7)
-		dayInWeek := k % 7
+		week := int((k - 1) / 7)
 
-		if dayInWeek == 0 {
-			col = columns{}
+		if _, ok := cols[week]; !ok {
+			cols[week] = make(columns, 7)
 		}
 
-		col = append(col, commits[k])
-
-		if dayInWeek == 6 {
-			cols[week] = col
-		}
+		j := (k - 1) % 7
+		cols[week][j] = commits[k]
 	}
 	return cols
 }
@@ -264,9 +253,9 @@ func printDayCol(day int) {
 	case 0:
 		out = " Sat "
 	case 2:
-		out = " Tue "
-	case 4:
 		out = " Thu "
+	case 4:
+		out = " Tue "
 	case 6:
 		out = " Sun "
 	}

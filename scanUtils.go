@@ -7,15 +7,41 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"strings"
 )
+
+func getIgnoredDirs() (map[string]int, error) {
+	parsedDirs, err := parseLinesToSlice(IGNOREFILEPATH)
+	if err != nil {
+		log.Panic(err)
+	}
+	ignoredDirs := make(map[string]int)
+
+	for i, x := range parsedDirs {
+		if strings.HasPrefix(x, "*/") || strings.HasPrefix(x, "/") {
+			ignoredDirs[strings.Split(x, "/")[1]] = i
+		} else if strings.HasSuffix(x, "/") || strings.HasPrefix(x, "/**") {
+			ignoredDirs[strings.Split(x, "/")[0]] = i
+		} else {
+			ignoredDirs[x] = i
+		}
+	}
+
+	return ignoredDirs, nil
+}
 
 func scanForGitDir(folderPath string) ([]string, error) {
 	gitDirs := make([]string, 1)
-	err := filepath.WalkDir(folderPath, func(path string, d fs.DirEntry, err error) error {
+	ignoredDirs, err := getIgnoredDirs()
+	if err != nil {
+		log.Panicln(err)
+	}
+	err = filepath.WalkDir(folderPath, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if d.Name() == "node_modules" || d.Name() == "env" || d.Name() == "venv" {
+
+		if _, ok := ignoredDirs[d.Name()]; ok {
 			return filepath.SkipDir
 		}
 		if d.IsDir() && d.Name() == ".git" {

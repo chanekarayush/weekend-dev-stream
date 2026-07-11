@@ -1,6 +1,6 @@
 # Local Git Heatmap
 
-![Header Image](./assets/image.png)
+![Header Image](./assets/header-image.png)
 
 ## Based on [this article](https://flaviocopes.com/go-git-contributions/)
 

@@ -1,32 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"io"
+	"log"
 	"os"
 )
-
-func main() {
-	var height int
-	var width int
-	flag.IntVar(&height, "ht", 1080, "Height of the Video Stream")
-	flag.IntVar(&width, "ht", 1920, "Width of the Video Stream")
-}
-
-func readFrames(width int, height int) [][]byte {
-	frames := make([][]byte, 0)
-	for {
-		// RGB video has R, G, B channels, allocate space for them
-		frame := make([]byte, width*height*3)
-		// io.ReadFull returns err == nil when the file is completely read
-		if _, err := io.ReadFull(os.Stdin, frame); err == nil {
-			break
-		}
-		frames = append(frames, frame)
-	}
-	// TODO: show size of frames
-	return frames
-}
 
 const (
 	Wr   = 0.299
@@ -36,15 +16,42 @@ const (
 	Vmax = 0.615
 )
 
+func main() {
+	var height int
+	var width int
+	flag.IntVar(&height, "ht", 216, "Height of the Video Stream")
+	flag.IntVar(&width, "wd", 384, "Width of the Video Stream")
+
+	frames := readFrames(width, height)
+	convertedFrames := convertRGBtoYUV(width, height, frames)
+	log.Println(len(convertedFrames))
+	writeFileToDisk(convertedFrames, "encodedVideo.yuv")
+}
+
+func readFrames(width int, height int) [][]byte {
+	frames := make([][]byte, 0)
+	for {
+		// RGB video has R, G, B channels, allocate space for them
+		frame := make([]byte, width*height*3)
+		_, err := io.ReadFull(os.Stdin, frame)
+		if err != nil {
+			break
+		}
+		frames = append(frames, frame)
+	}
+	// TODO: show size of frames
+	return frames
+}
+
 func convertRGBtoYUV(width int, height int, frames [][]byte) [][]byte {
-	convertDSFrames := make([][]byte, 0)
-	copy(convertDSFrames, frames)
+	// convertDSFrames := make([][]byte, len(frames))
+	// copy(convertDSFrames, frames)
 	for i, frame := range frames {
 		// RGB to YUV conversion
 		Y := make([]byte, width*height)
 		U := make([]float64, width*height)
 		V := make([]float64, width*height)
-		for j := 0; j <= width*height; j++ {
+		for j := 0; j < width*height; j++ {
 			r := float64(frame[3*j])
 			g := float64(frame[3*j+1])
 			b := float64(frame[3*j+2])
@@ -79,14 +86,12 @@ func convertRGBtoYUV(width int, height int, frames [][]byte) [][]byte {
 
 		for r := 0; r < height; r += 2 {
 			for c := 0; c < width; c += 2 {
-				ui := (U[r*width+c] + U[r*width*c+1] + U[(r+1)*width+c] + U[(r+1)*width+c+1]) / 4
-				vi := (V[r*width+c] + V[r*width*c+1] + V[(r+1)*width+c] + V[(r+1)*width+c+1]) / 4
-
+				ui := (U[r*width+c] + U[r*width+c+1] + U[(r+1)*width+c] + U[(r+1)*width+c+1]) / 4
+				vi := (V[r*width+c] + V[r*width+c+2] + V[(r+1)*width+c] + V[(r+1)*width+c+1]) / 4
 				uDSample[r/2+width/2+c/2] = uint8(ui)
 				vDSample[r/2+width/2+c/2] = uint8(vi)
 
 			}
-
 		}
 
 		yuv420Frame := make([]byte, len(Y)+len(uDSample)+len(vDSample))
@@ -95,10 +100,17 @@ func convertRGBtoYUV(width int, height int, frames [][]byte) [][]byte {
 		copy(yuv420Frame[len(Y):], uDSample)
 		copy(yuv420Frame[len(Y)+len(uDSample):], vDSample)
 
-		convertDSFrames[i] = yuv420Frame
+		frames[i] = yuv420Frame
 
 	}
 	// TODO: show size
-	// TODO: write encoded file to disk
-	return convertDSFrames
+	return frames
+}
+
+func writeFileToDisk(file [][]byte, outputName string) {
+	err := os.WriteFile(outputName, bytes.Join(file, nil), 0o644)
+	if err != nil {
+		log.Print("WriteFileToDiskFailed")
+		log.Fatalln(err)
+	}
 }

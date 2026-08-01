@@ -84,12 +84,14 @@ func convertRGBtoYUV(width int, height int, frames [][]byte) [][]byte {
 		// Vi = avg(V1, V2, V3, V4)
 		// Basically a grid with a average pooling for U and V
 
+		// -ve -> green U and V
+		// underflow -> -100 (green) to be come 246
 		for r := 0; r < height; r += 2 {
 			for c := 0; c < width; c += 2 {
 				ui := (U[r*width+c] + U[r*width+c+1] + U[(r+1)*width+c] + U[(r+1)*width+c+1]) / 4
-				vi := (V[r*width+c] + V[r*width+c+2] + V[(r+1)*width+c] + V[(r+1)*width+c+1]) / 4
-				uDSample[r/2+width/2+c/2] = uint8(ui)
-				vDSample[r/2+width/2+c/2] = uint8(vi)
+				vi := (V[r*width+c] + V[r*width+c+1] + V[(r+1)*width+c] + V[(r+1)*width+c+1]) / 4
+				uDSample[r/2*width/2+c/2] = uint8(ui + 128)
+				vDSample[r/2*width/2+c/2] = uint8(vi + 128)
 
 			}
 		}

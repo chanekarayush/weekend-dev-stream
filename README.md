@@ -19,9 +19,12 @@ The Above diagram roughly outlines the entire process of conversion and encoding
 
 What I mean by this is not just Subsampling which we do here using the most popular 4:2:0 
 ratio, but the entire process of converting RGB to YUV colorspace
+<img width="1444" height="659" alt="image" src="https://github.com/user-attachments/assets/d4f5a21c-a136-4921-887c-46e167248cfc" />
 
 #### RGB to YUV conversion formulae
 All the math in this program is basically reduced to these 3 formulae
+<img width="699" height="179" alt="image" src="https://github.com/user-attachments/assets/d167182b-ca44-4808-ad6e-5edf11861418" />
+*Source: [Wikipedia](https://en.wikipedia.org/wiki/Y%E2%80%B2UV )*
 
 ### References
 

@@ -1,4 +1,7 @@
-# weekend-dev-stream
+# Video Codec in Golang
+
+<img width="1884" height="618" alt="image" src="https://github.com/user-attachments/assets/bc1c197a-9d1a-4c98-b2a6-308bc7db5e82" />
+
 
 ## Week #1
 

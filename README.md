@@ -4,7 +4,6 @@
 
 ### Video Codec in Golang
 
-![Fort Video](./assets/fort_video.mp4)
 
 This program is a toy codec that is based on real video codecs, just a lot less math.
 

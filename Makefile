@@ -7,7 +7,7 @@ YUVTORGB := ./assets/yuvtorgb.rgb24
 DECODED := ./assets/original.rgb
 
 # Default target / all target runs even if you just write `make`
-all: run
+all: convert run
 play: YUV RGB Decoded
 
 run: 
@@ -20,7 +20,7 @@ build:
 
 clean:
 	@echo "Deleting Program Generated Files..."
-	@rm ./assets/encoded.yuv ./assets/original.rgb ./assets/rgbtoyuv.yuv ./assets/yuvtorgb.yuv 
+	@rm ./assets/encoded.yuv ./assets/original.rgb ./assets/rgbtoyuv.yuv ./assets/yuvtorgb.rgb24
 
 YUV:
 	@echo "Playing YUV Space Coverted file..."
@@ -34,4 +34,5 @@ Decoded:
 	@echo "Playing fully decoded file..."
 	@ffplay -f rawvideo -pixel_format rgb24 -video_size $(WIDTH)x$(HEIGHT) -framerate $(FRAMERATE) $(DECODED)
 
-
+convert:
+	@ffmpeg  -i ./assets/fort_video.mp4 -f rawvideo -pix_fmt rgb24 ./assets/fort_video.rgb24

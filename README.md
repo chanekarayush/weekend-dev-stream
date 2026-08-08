@@ -5,6 +5,8 @@
 ### Video Codec in Golang
 
 
+https://github.com/user-attachments/assets/486755f5-007d-404f-a8be-c8032694a901
+
 This program is a toy codec that is based on real video codecs, just a lot less math.
 
 ### Overview of Codec Process

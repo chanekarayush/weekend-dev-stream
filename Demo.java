@@ -47,6 +47,10 @@ public class Demo {
                                 new Vertex(100, -100, -100),
                                 new Vertex(-100, -100, 100),
                                 Color.YELLOW));
+
+                // for (int i = 0; i < 7; i++) {
+                // triangles = inflate(triangles);
+                // }
                 double heading = Math.toRadians(horizontalSlider.getValue());
                 Matrix3d headingTransform = new Matrix3d(new double[] {
                         Math.cos(heading), 0, -Math.sin(heading),
@@ -145,6 +149,28 @@ public class Demo {
         int blue = (int) Math.pow(blueLinear, 1 / 2.4);
 
         return new Color(red, green, blue);
+    }
+
+    public static List<Triangle> inflate(List<Triangle> tris) {
+        List<Triangle> result = new ArrayList<>();
+        for (Triangle t : tris) {
+            Vertex m1 = new Vertex((t.v1.x + t.v2.x) / 2, (t.v1.y + t.v2.y) / 2, (t.v1.z + t.v2.z) / 2);
+            Vertex m2 = new Vertex((t.v2.x + t.v3.x) / 2, (t.v2.y + t.v3.y) / 2, (t.v2.z + t.v3.z) / 2);
+            Vertex m3 = new Vertex((t.v1.x + t.v3.x) / 2, (t.v1.y + t.v3.y) / 2, (t.v1.z + t.v3.z) / 2);
+            result.add(new Triangle(t.v1, m1, m3, t.clr));
+            result.add(new Triangle(t.v2, m1, m2, t.clr));
+            result.add(new Triangle(t.v3, m2, m3, t.clr));
+            result.add(new Triangle(m1, m2, m3, t.clr));
+        }
+        for (Triangle t : result) {
+            for (Vertex v : new Vertex[] { t.v1, t.v2, t.v3 }) {
+                double l = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z) / Math.sqrt(30000);
+                v.x /= l;
+                v.y /= l;
+                v.z /= l;
+            }
+        }
+        return result;
     }
 
 }

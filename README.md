@@ -17,3 +17,9 @@ All your data stays local, never leaves your PC.
 [Video Codec](https://github.com/chanekarayush/weekend-dev-stream/tree/week2/video-codec) is a toy video codec written golang from scratch.  
 
 It encodes `rgb24` into yuv format (`yuv420p`). Can be played locally and using any video.
+
+## Week #3
+
+### [3D Renderer in Java](https://github.com/chanekarayush/weekend-dev-stream/tree/week3/3D-engine)
+
+A simple 3D renderer that draws 3D objects and allows you to rotate them, rendered using many triangles.

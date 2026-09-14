@@ -4,6 +4,16 @@
 
 ### 3D Renderer from Scratch in Java Swing
 
+
+https://github.com/user-attachments/assets/d6e820cf-ce79-40b1-9775-b09bfa32af88
+
+
+https://github.com/user-attachments/assets/20592fb4-861f-42ae-b950-0daad41900ce
+
+
+
+
+
 A Java 3D Renderer that renders triangles to create a tetrahedron and a circle.
 Also includes good stuff like rotation around both axes, Z Buffer Clipping and Shading.
 

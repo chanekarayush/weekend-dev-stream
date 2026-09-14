@@ -7,6 +7,8 @@
 A Java 3D Renderer that renders triangles to create a tetrahedron and a circle.
 Also includes good stuff like rotation around both axes, Z Buffer Clipping and Shading.
 
+### Maths Related to this
+
 ### Matrix Representation
 
 We use the `Matrix3d` class to store a 3×3 transformation matrix as a flat array of 9 values:
@@ -18,8 +20,6 @@ m_{10} & m_{11} & m_{12} \\
 m_{20} & m_{21} & m_{22}
 \end{bmatrix}
 $$
-
----
 
 ## Heading Rotation (Yaw / Tranformation in X-Z Plane)
 
@@ -58,8 +58,6 @@ Which expands to:
 - $y' = y$ (unchanged, rotation around Y-axis)
 - $z' = x\sin(\theta) + z\cos(\theta)$
 
----
-
 ## Pitch Rotation (Transformation along the Y-Z Plane)
 
 The vertical slider controls tilt/rotation around the **Y-Z Plane** (pitch).
@@ -96,8 +94,6 @@ Which expands to:
 - $x'' = x'$ (unchanged, rotation around X-axis)
 - $y'' = y'\cos(\phi) - z'\sin(\phi)$
 - $z'' = y'\sin(\phi) + z'\cos(\phi)$
-
----
 
 ## Combined Transformation
 
@@ -139,8 +135,6 @@ $$
 - $m_{21} = \sin(\theta)\sin(\phi) + \cos(\theta)\cos(\phi)$ ← Combined effect!
 - $m_{22} = -\sin(\theta)\sin(\phi) + \cos(\theta)\cos(\phi)$
 
----
-
 ## Transformation Applied to Vertex
 
 For each triangle vertex (x, y, z):
@@ -179,8 +173,6 @@ z
 \end{bmatrix}
 $$
 
----
-
 ## Rotation Matrix Properties
 
 | Property          | Value/Formula        | Explanation                                  |
@@ -189,9 +181,8 @@ $$
 | **Orthogonality** | $R^T R = I$          | Columns are orthonormal unit vectors         |
 | **Inverse**       | $R^{-1} = R^T$       | Rotation matrix is its own transpose inverse |
 
----
-
 ### References
 
+1. [**Original Article**](http://blog.rogach.org/2015/08/how-to-create-your-own-simple-3d-render.html) - How to create your own simple 3D render engine in pure Java
 1. [**Rotation Matrix**](https://en.wikipedia.org/wiki/Rotation_matrix) - Standard linear algebra for 2D/3D rotations
-2. [**Matrix Multiplication Order**](https://en.wikipedia.org/wiki/Multiplicative_group_of_rotation_matrices#Rotation_order) - $R_y(\theta) \cdot R_x(\phi)$ vs $R_x(\phi) \cdot R_y(\theta)$ produce different results
+1. [**Matrix Multiplication Order**](https://en.wikipedia.org/wiki/Multiplicative_group_of_rotation_matrices#Rotation_order) - $R_y(\theta) \cdot R_x(\phi)$ vs $R_x(\phi) \cdot R_y(\theta)$ produce different results
